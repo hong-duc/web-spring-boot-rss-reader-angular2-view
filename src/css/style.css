@@ -204,7 +204,7 @@ ul.inbox-pagination li {
     background: none repeat scroll 0 0 #fcfcfc;
     border: 1px solid #e7e7e7;
     border-radius: 3px !important;
-    color: #afafaf;
+    color: black;
     display: inline-block;
     padding: 5px 10px;
 }
@@ -212,7 +212,7 @@ ul.inbox-pagination li {
     background: none repeat scroll 0 0 #fcfcfc;
     border: 1px solid #e7e7e7;
     border-radius: 3px !important;
-    color: #afafaf;
+    color: black;
     display: inline-block;
     padding: 5px 15px;
 }
@@ -239,13 +239,7 @@ ul.inbox-pagination li {
     border: 1px solid #e6e6e6;
     box-shadow: none;
 }
-.btn-send, .btn-send:hover {
-    background: none repeat scroll 0 0 #00a8b3;
-    color: #fff;
-}
-.btn-send:hover {
-    background: none repeat scroll 0 0 #009da7;
-}
+
 .modal-header h4.modal-title {
     font-family: "Open Sans",sans-serif;
     font-weight: 300;
@@ -362,4 +356,9 @@ ul {
     list-style-type: none;
     padding: 0px;
     margin: 0px;
+}
+
+.not-active{
+    pointer-events: none;
+    cursor: default;
 }

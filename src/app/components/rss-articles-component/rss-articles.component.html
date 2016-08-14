@@ -21,7 +21,7 @@
 
             <div class="btn-group">
                 <a data-original-title="Refresh" data-placement="top" data-toggle="dropdown" href="#" class="btn mini tooltips">
-                    <i class=" fa fa-refresh"></i>
+                    <i class="fa fa-refresh"></i>
                 </a>
             </div>
             <div class="btn-group hidden-phone">
@@ -37,18 +37,18 @@
             </div>
 
             <ul class="unstyled inbox-pagination">
-                <li><span>1-50 of 234</span></li>
+                <li><span>{{message}}</span></li>
                 <li>
-                    <a class="np-btn" href="#"><i class="fa fa-angle-left  pagination-left"></i></a>
+                    <a class="np-btn" href="#" (click)="giamGioiHan50()" [class.not-active]="gioihan === 50"><i class="fa fa-angle-left  pagination-left"></i></a>
                 </li>
                 <li>
-                    <a class="np-btn" href="#"><i class="fa fa-angle-right pagination-right"></i></a>
+                    <a class="np-btn" href="#" (click)="tangGioiHan50()" [class.not-active]="gioihan > count"><i class="fa fa-angle-right pagination-right"></i></a>
                 </li>
             </ul>
         </div>
         <table class="table table-inbox table-hover">
             <tbody >
-                <tr *ngFor="let article of rss.articles">
+                <tr *ngFor="let article of articles">
                     <td class="inbox-small-cells">
                         <input type="checkbox" class="mail-checkbox">
                     </td>
