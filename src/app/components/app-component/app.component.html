@@ -45,11 +45,10 @@
         <!-- /.modal -->
       </div>
       <ul class="inbox-nav inbox-divider">
-        <li class="active">
-          <a href="#">Tiêu đề 1 <span class="label label-danger pull-right">2</span></a>
-
+        <li *ngFor="let rs of rss">
+          <a href="#">{{rs.title}}<span class="label label-danger pull-right"></span></a>
         </li>
-        <li>
+        <!--<li>
           <a href="#">Tiêu đề 2</a>
         </li>
         <li>
@@ -60,7 +59,7 @@
         </li>
         <li>
           <a href="#">Tiêu đề 5</a>
-        </li>
+        </li>-->
       </ul>
 
 
@@ -126,7 +125,7 @@
               <td class="view-message  inbox-small-cells"><i class="fa fa-paperclip"></i></td>
               <td class="view-message  text-right">9:27 AM</td>
             </tr>
-            <tr class="unread">
+            <!--<tr class="unread">
               <td class="inbox-small-cells">
                 <input type="checkbox" class="mail-checkbox">
               </td>
@@ -325,7 +324,7 @@
               <td class="view-message view-message">Alireza Zare Login faild</td>
               <td class="view-message inbox-small-cells"><i class="fa fa-paperclip"></i></td>
               <td class="view-message text-right">feb 14</td>
-            </tr>
+            </tr>-->
           </tbody>
         </table>
       </div>
