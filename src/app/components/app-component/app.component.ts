@@ -6,23 +6,25 @@ import {RssService} from '../../services/rss.service';
 @Component({
   moduleId: module.id,
   selector: 'app-root',
-  templateUrl: 'app.component.html',
-  styleUrls: ['app.component.css']
+  templateUrl: '/app/components/app-component/app.component.html'
 })
 export class AppComponent implements OnInit {
-  rss: RSS[]
+  manyRss: RSS[];
+  selectedRss: RSS;
 
-  constructor(
-    private rssService : RssService
-    ){}
+  constructor(private rssService: RssService) { }
 
-  private getRss(){
+  getListOfRss() {
     //this.rssService.getRss().then(rss => this.rss = rss);
-    this.rss = this.rssService.getRss();
+    this.manyRss = this.rssService.getRss();
   }
 
+  onSelect(rss: RSS) {
+    this.selectedRss = rss;
+  }
 
   ngOnInit() {
-    this.getRss();
+    this.getListOfRss();
+    this.selectedRss = this.manyRss[0];
   }
 }

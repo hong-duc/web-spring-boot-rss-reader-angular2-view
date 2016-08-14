@@ -3,7 +3,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {FormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
 
-import {AppComponent,RssService} from './';
+import {AppComponent,RssService,RssArticlesComponent} from './';
 
 @NgModule({
     imports:[
@@ -12,7 +12,8 @@ import {AppComponent,RssService} from './';
         HttpModule
     ],
     declarations:[
-        AppComponent
+        AppComponent,
+        RssArticlesComponent
     ],
     providers:[
         RssService
