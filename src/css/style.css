@@ -81,6 +81,11 @@ ul.inbox-nav {
     padding: 0;
     width: 100%;
 }
+
+ul.inbox-nav a:hover{
+    text-decoration: none;
+}
+
 .inbox-divider {
     border-bottom: 1px solid #d5d8df;
 }
