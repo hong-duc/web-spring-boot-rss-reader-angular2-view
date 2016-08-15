@@ -11,6 +11,7 @@ const manyRss = [{ "title": "programming", "link": "https://www.reddit.com/r/pro
 @Injectable()
 export class RssService {
     private rssUrl = '/rss-app';
+    private sessionUser = 'myuser';
 
     constructor(
         private http: Http
@@ -23,6 +24,22 @@ export class RssService {
             error => alert(JSON.stringify(error)))
             .catch(this.handleError);*/
         return manyRss as RSS[];            
+    }
+
+    addLink(link:string){
+        this.post(link);
+    }
+
+    //Add new rss
+    private post(link:string){
+        this.http.post(this.rssUrl,link)
+            .toPromise()
+            .then(res => {
+                console.log("status code: " + res.status);
+                console.log("response value: " +res.text());
+            }, error => console.log("reject: " + error))
+            .catch(this.handleError);
+        console.log("post chay");
     }
 
     private handleError(error: any) {
