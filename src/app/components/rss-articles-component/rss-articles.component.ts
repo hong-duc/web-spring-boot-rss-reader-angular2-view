@@ -9,24 +9,27 @@ import {Article} from '../../model/Article';
 })
 export class RssArticlesComponent implements OnChanges,OnInit{
     
-    @Input() rss:RSS;
+    @Input()
     articles: Article[];
-    count: number;
     gioihan: number = 50;
-    message: string;
+    tempArticles : Article[];
+    count: number;
 
     ngOnInit(){
-        this.articles = this.rss.articles;
-        this.count = this.articles.length;
-        this.message = this.gioihan-49+'-'+this.gioihan+' of '+this.count;
+        console.log("init RssArticlesComponent");
     }
 
     ngOnChanges(changes: {[propertyName: string]: SimpleChange}){
         for(let proName in changes){
             switch (proName) {
-                case 'rss':
-                    this.rss = changes['rss'].currentValue;
-                    this.articles = this.rss.articles.slice(0,50);
+                case 'articles':
+                    //this.rss = changes['rss'].currentValue;
+                    //this.articles = this.rss.articles.slice(0,50);
+                    if(typeof this.articles !== 'undefined'){
+                        this.tempArticles = this.articles.slice(0,50);
+                        this.count = this.articles.length;
+                    }
+                    console.log("rss change in RssArticlesComponent");
                     break;
             
                 default:
@@ -37,12 +40,12 @@ export class RssArticlesComponent implements OnChanges,OnInit{
 
     tangGioiHan50(){
         this.gioihan += 50;
-        this.articles = this.rss.articles.slice(this.gioihan - 50,this.gioihan);
+        this.tempArticles = this.articles.slice(this.gioihan - 50,this.gioihan);
     }
 
     giamGioiHan50(){
         this.gioihan -= 50;
-        this.articles = this.rss.articles.slice(this.gioihan - 50,this.gioihan);
+        this.tempArticles = this.articles.slice(this.gioihan - 50,this.gioihan);
     }
 
     

@@ -53,7 +53,13 @@
 
         </aside>
 
-        <rss-articles [rss]="selectedRss"></rss-articles>
+        <aside class="lg-side">
+            <div class="inbox-head">
+                <h3 *ngIf="selectedRss">{{selectedRss.title}}</h3>
+                <h3 *ngIf="!selectedRss">Xin chào</h3>
+            </div>
+            <rss-articles [articles]="articles"></rss-articles>
+        </aside>
 
     </div>
 </div>
