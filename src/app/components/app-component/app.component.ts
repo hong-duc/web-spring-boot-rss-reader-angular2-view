@@ -20,7 +20,7 @@ export class AppComponent implements OnInit {
   constructor(private rssService: RssService) { }
 
   getListOfRss() {
-    this.rssService.getRss().then(rss => this.manyRss = rss);
+    this.rssService.getManyRss().then(rss => this.manyRss = rss);
     //this.manyRss = this.rssService.getRss();
   }
 
