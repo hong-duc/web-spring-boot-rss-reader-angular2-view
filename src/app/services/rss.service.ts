@@ -19,14 +19,23 @@ export class RssService {
 
     //get array of rss
     getManyRss():Promise<RSS[]> {
-        return this.get(this.rssUrl + '/' + this.sessionUser).then(res => res.json() as RSS[]);
-        //return manyRss as RSS[];            
+        return this.get(this.rssUrl + '/' + this.sessionUser)
+        .then(res => res.json() as RSS[])
+        .catch(err => {
+            console.error("getManyRss: error " + err);
+            return null;
+        });            
     }
 
     //add new link
     addLink(link: string): Promise<RSS> {
         var json = "{'link' : '" + link + "', 'user' : '" + this.sessionUser + "'}";
-        return this.post(json,this.rssUrl).then(res => res.json() as RSS);
+        return this.post(json,this.rssUrl).then(res => {
+            return res.json() as RSS;
+        }).catch(err => {
+            console.error("addLink: an error " + err);
+            return null;
+        });
     }
 
     //call get to server
@@ -37,9 +46,6 @@ export class RssService {
                     console.log("get status code: " + res.status);
                     console.log("body response: " + res.text());
                     return res;
-                },
-                error => {
-                    console.log("reject: " + error);
                 })
                 .catch(this.handleError);
     }
@@ -57,33 +63,30 @@ export class RssService {
                 console.log("post status code: " + res.status);
                 console.log("body response: " + res.text());
                 return res;
-            }, error => console.log("reject: " + error))
+            })
             .catch(this.handleError);
     }
 
     //call put to server
-    private put(rss: RSS,url: string):Promise<Response>{
-        console.log("chay put voi gia tra: " + JSON.stringify(rss));
+    private put(json: string,url: string):Promise<Response>{
+        console.log("chay put voi gia tra: " + JSON.stringify(json));
         let headers = new Headers({
             'Content-Type':'application/json'
         });
 
-        return this.http.put(url,JSON.stringify(rss),headers)
+        return this.http.put(url,json,headers)
                     .toPromise()
                     .then(res => {
                         console.log("put status code: " + res.status);
                         console.log("body response: " + res.text());
                         return res;
-                    },
-                    error => {
-                        console.log("reject: " + error);
                     })
                     .catch(this.handleError);
 
     }
 
     //handle error
-    private handleError(error: any) {
+    private handleError(error: any) : Promise<void> {
         console.error('An error occurred', error);
         switch (error.status) {
             case 406:

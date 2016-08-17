@@ -45,11 +45,25 @@
                 <!-- /.modal -->
             </div>
 
-            <ul class="inbox-nav inbox-divider">
-                <li *ngFor="let rss of manyRss" [class.active]="rss === selectedRss" (click)="onSelect(rss)">
-                    <a href="#">{{rss.title}}<span class="label label-danger pull-right"></span></a>
-                </li>
-            </ul>
+            <table class="table-nav table table-hover">
+                <tbody>
+                    <tr *ngFor="let rss of manyRss">
+                        <td class="inbox-small">
+                            <div class="btn-group">
+                                <a data-toggle="dropdown" href="#" class="mini blue" aria-expanded="false">
+                                    <i class="fa fa-gear"></i>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li (click)="onRefesh(rss)"><a href="#"><i class="fa fa-refresh"></i> Refesh</a></li>
+                                    <li class="divider"></li>
+                                    <li (click)="onDelete(rss)"><a href="#"><i class="fa fa-trash-o"></i> Delete</a></li>
+                                </ul>
+                            </div>
+                        </td>
+                        <td (click)="onSelect(rss)"><a href="#">{{rss.title}}</a></td>
+                    </tr>
+                </tbody>
+            </table>
 
         </aside>
 

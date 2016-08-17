@@ -23,8 +23,6 @@ export class RssArticlesComponent implements OnChanges,OnInit{
         for(let proName in changes){
             switch (proName) {
                 case 'articles':
-                    //this.rss = changes['rss'].currentValue;
-                    //this.articles = this.rss.articles.slice(0,50);
                     if(typeof this.articles !== 'undefined'){
                         this.tempArticles = this.articles.slice(0,50);
                         this.count = this.articles.length;

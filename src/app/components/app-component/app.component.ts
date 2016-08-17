@@ -20,7 +20,11 @@ export class AppComponent implements OnInit {
   constructor(private rssService: RssService) { }
 
   getListOfRss() {
-    this.rssService.getManyRss().then(rss => this.manyRss = rss);
+    this.rssService.getManyRss().then(rss => {
+      if(rss !== null){
+        this.manyRss = rss;
+      }
+    });
     //this.manyRss = this.rssService.getRss();
   }
 
@@ -31,10 +35,23 @@ export class AppComponent implements OnInit {
 
   onSubmit() {
     this.rssService.addLink(this.link).then(rss => {
-      this.manyRss.push(rss);
-      alert("them rss thanh cong");
+      if(rss === null){
+        console.log("onSubmit: co loi xay ra");
+      }else{
+        this.manyRss.push(rss);
+        alert("them rss thanh cong");
+        console.log("onSubmit: them thanh cong");
+      }
     });
     console.log("submit link: " + this.link);
+  }
+
+  onDelete(rss : RSS){
+    console.log("delete this: " + rss.title);
+  }
+
+  onRefesh(rss : RSS){
+    console.log("refesh this: " + rss.title);
   }
 
   ngOnInit() {
