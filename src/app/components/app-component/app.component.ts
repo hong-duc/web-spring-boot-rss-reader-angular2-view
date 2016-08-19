@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import {RSS} from '../../model/RSS';
+import {Feed} from '../../model/Feed';
 import {Article} from '../../model/Article';
 import {RssService} from '../../services/rss.service';
 
@@ -10,52 +10,59 @@ import {RssService} from '../../services/rss.service';
   templateUrl: '/app/components/app-component/app.component.html'
 })
 export class AppComponent implements OnInit {
-  manyRss: RSS[];
-  selectedRss: RSS;
+  feeds: Feed[];
+  selectedFeed: Feed;
   articles: Article[];
 
-  //form value;
+  // form value;
   link: string;
 
   constructor(private rssService: RssService) { }
 
   getListOfRss() {
+    console.log('get a list of Feed');
     this.rssService.getManyRss().then(rss => {
-      if(rss !== null){
-        this.manyRss = rss;
+      if (rss !== null) {
+        this.feeds = rss;
       }
     });
-    //this.manyRss = this.rssService.getRss();
   }
 
-  onSelect(rss: RSS) {
-    this.selectedRss = rss;
-    this.articles = rss.articles;
+  onSelect(feed: Feed) {
+    this.selectedFeed = feed;
+    this.articles = this.selectedFeed.articles;
   }
 
   onSubmit() {
     this.rssService.addLink(this.link).then(rss => {
-      if(rss === null){
-        console.log("onSubmit: co loi xay ra");
-      }else{
-        this.manyRss.push(rss);
-        alert("them rss thanh cong");
-        console.log("onSubmit: them thanh cong");
+      if (rss === null) {
+        console.log('onSubmit: co loi xay ra');
+      }else {
+        this.feeds.push(rss);
+        alert('them rss thanh cong');
+        this.link = '';
+        console.log('onSubmit: them thanh cong');
       }
     });
-    console.log("submit link: " + this.link);
+    console.log('submit link: ' + this.link);
   }
 
-  onDelete(rss : RSS){
-    console.log("delete this: " + rss.title);
+  onDelete(rss: Feed) {
+    console.log('delete this: ' + rss.title);
   }
 
-  onRefesh(rss : RSS){
-    console.log("refesh this: " + rss.title);
+  onRefesh(feed: Feed) {
+    console.log('refesh this: ' + feed.title);
+    this.rssService.refeshFeed(feed).then(feed => {
+      if (feed !== null) {
+        this.getListOfRss();
+        // this.selectedFeed = feed;
+      }
+    });
   }
 
   ngOnInit() {
+    console.log('init app component');
     this.getListOfRss();
-    //console.log("manyRss.length = " + this.manyRss.length);
   }
 }

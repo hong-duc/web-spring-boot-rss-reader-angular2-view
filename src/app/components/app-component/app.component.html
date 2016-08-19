@@ -12,7 +12,7 @@
             </div>
             <div class="inbox-body">
                 <a href="#myModal" data-toggle="modal" title="Compose" class="btn btn-compose">
-                              Thêm RSS
+                              Thêm Feed
                           </a>
                 <!-- Modal -->
                 <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal" class="modal fade" style="display: none;">
@@ -20,14 +20,14 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
-                                <h4 class="modal-title">Thêm RSS</h4>
+                                <h4 class="modal-title">Thêm Feed</h4>
                             </div>
                             <div class="modal-body">
                                 <form role="form" class="form-horizontal" (ngSubmit)="onSubmit()">
                                     <div class="form-group">
                                         <label class="col-lg-2 control-label">Nhập url</label>
                                         <div class="col-lg-10">
-                                            <input type="text" placeholder="rss url" id="rss-url" class="form-control" name="rss-url" required [(ngModel)]="link">
+                                            <input type="text" placeholder="feed url" id="feed-url" class="form-control" name="feed-url" required [(ngModel)]="link">
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -47,20 +47,20 @@
 
             <table class="table-nav table table-hover">
                 <tbody>
-                    <tr *ngFor="let rss of manyRss">
+                    <tr *ngFor="let feed of feeds">
                         <td class="inbox-small">
                             <div class="btn-group">
                                 <a data-toggle="dropdown" href="#" class="mini blue" aria-expanded="false">
                                     <i class="fa fa-gear"></i>
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li (click)="onRefesh(rss)"><a href="#"><i class="fa fa-refresh"></i> Refesh</a></li>
+                                    <li (click)="onRefesh(feed)"><a href="#"><i class="fa fa-refresh"></i> Refesh</a></li>
                                     <li class="divider"></li>
-                                    <li (click)="onDelete(rss)"><a href="#"><i class="fa fa-trash-o"></i> Delete</a></li>
+                                    <li (click)="onDelete(feed)"><a href="#"><i class="fa fa-trash-o"></i> Delete</a></li>
                                 </ul>
                             </div>
                         </td>
-                        <td (click)="onSelect(rss)"><a href="#">{{rss.title}}</a></td>
+                        <td (click)="onSelect(feed)"><a href="#">{{feed.title}}</a></td>
                     </tr>
                 </tbody>
             </table>
@@ -69,10 +69,9 @@
 
         <aside class="lg-side">
             <div class="inbox-head">
-                <h3 *ngIf="selectedRss">{{selectedRss.title}}</h3>
-                <h3 *ngIf="!selectedRss">Xin chào</h3>
+                <h3>{{selectedFeed?.title || 'Xin chào'}}</h3>
             </div>
-            <rss-articles [articles]="articles"></rss-articles>
+            <feed-articles [articles]="articles"></feed-articles>
         </aside>
 
     </div>
