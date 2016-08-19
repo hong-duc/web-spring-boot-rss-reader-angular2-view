@@ -13,7 +13,7 @@ export class Article {
 
     public getDate(): string {
         let date = this.publishDate.getDate();
-        let month = this.publishDate.getMonth();
+        let month = this.publishDate.getMonth() + 1;
         let year = this.publishDate.getFullYear();
         return date + '-' + month + '-' + year;
     }
