@@ -45,7 +45,7 @@
                 </td>
                 <td class="inbox-small-cells"><i class="fa fa-star"></i></td>
                 <td class="view-message " colspan="3"><a href="{{article.link}}" target="_blank">{{article.title}}</a></td>
-                <td class="view-message  text-right">{{article.dateToString || 'no khong chay'}}</td>
+                <td class="view-message  text-right">{{article.getDate()}}</td>
             </tr>
         </tbody>
     </table>

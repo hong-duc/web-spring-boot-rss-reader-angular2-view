@@ -21,7 +21,14 @@ export class RssService {
     // get array of rss
     getManyRss(): Promise<Feed[]> {
         return this.get(this.rssUrl + '/' + this.sessionUser)
-            .then(res => JSON.parse(res.text(), Utility.parseJsonToFeed) as Feed[])
+            .then(res => {
+                let obj = JSON.parse(res.text(), Utility.parseJsonToFeed);
+                let feeds: Feed[] = [];
+                for (let i in obj) {
+                    feeds.push(new Feed(obj[i]));
+                }
+                return feeds as Feed[];
+            })
             .catch(err => {
                 console.error('getManyRss: error ' + err);
                 return null;
@@ -31,9 +38,14 @@ export class RssService {
 
     // add new link
     addLink(link: string): Promise<Feed> {
-        let json = '{"link" : "' + link + '", "user" : "' + this.sessionUser + '"}';
-        return this.post(json, this.rssUrl).then(res => {
-            return JSON.parse(res.text(), Utility.parseJsonToFeed) as Feed;
+        let json = {
+            "link": link,
+            "user": this.sessionUser
+        };
+        return this.post(JSON.stringify(json), this.rssUrl).then(res => {
+            let obj = JSON.parse(res.text(), Utility.parseJsonToFeed);
+            let feed = new Feed(obj);
+            return feed;
         }).catch(err => {
             console.error('addLink: an error ' + err);
             return null;
@@ -42,15 +54,17 @@ export class RssService {
 
     // refesh the feed
     refeshFeed(feed: Feed): Promise<Feed> {
-        let jsonFeed = JSON.stringify(feed);
-        let json = '{"user" : "' + this.sessionUser + '","feed":' + jsonFeed + '}';
+        let json = {
+            "user": this.sessionUser,
+            "feed": feed
+        };
 
-        return this.put(json, this.rssUrl)
-                .then(() => feed)
-                .catch(error => {
-                    console.error('refeshFeed: ' + error);
-                    return null;
-                });
+        return this.put(JSON.stringify(json), this.rssUrl)
+            .then(() => feed)
+            .catch(error => {
+                console.error('refeshFeed: ' + error);
+                return null;
+            });
     }
 
     // call get to server
@@ -59,7 +73,7 @@ export class RssService {
             .toPromise()
             .then(res => {
                 console.log('get status code: ' + res.status);
-               // console.log('body response: ' + res.text());
+                // console.log('body response: ' + res.text());
                 return res;
             })
             .catch(this.handleError);
@@ -76,7 +90,7 @@ export class RssService {
             .toPromise()
             .then(res => {
                 console.log('post status code: ' + res.status);
-               // console.log('body response: ' + res.text());
+                // console.log('body response: ' + res.text());
                 return res;
             })
             .catch(this.handleError);
@@ -93,7 +107,7 @@ export class RssService {
             .toPromise()
             .then(res => {
                 console.log('put status code: ' + res.status);
-               // console.log('body response: ' + res.text());
+                // console.log('body response: ' + res.text());
                 return res;
             })
             .catch(this.handleError);
