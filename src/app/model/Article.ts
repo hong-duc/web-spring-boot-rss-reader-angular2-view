@@ -2,12 +2,18 @@ export class Article {
     title: string;
     link: string;
     publishDate: Date;
+    isRead: boolean;
+    checked: boolean;
+    feedTitle: string;
 
 
-    constructor(obj: Article) {
+    constructor(obj: Article, feedTitle: string) {
         this.title = obj.title;
         this.link = obj.link;
         this.publishDate = obj.publishDate;
+        this.isRead = obj.isRead;
+        this.checked = false;
+        this.feedTitle = feedTitle;
     }
 
 
@@ -27,7 +33,8 @@ export class Article {
         let json = {
             "title": this.title,
             "link": this.link,
-            "publishDate": dateString
+            "publishDate": dateString,
+            "isRead": this.isRead
         };
         return json;
     }

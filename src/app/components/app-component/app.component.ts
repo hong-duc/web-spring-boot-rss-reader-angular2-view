@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import {Feed} from '../../model/Feed';
-import {Article} from '../../model/Article';
+import {Article,Feed} from '../../';
 import {RssService} from '../../services/rss.service';
 
 @Component({
@@ -47,15 +46,25 @@ export class AppComponent implements OnInit {
     console.log('submit link: ' + this.link);
   }
 
-  onDelete(rss: Feed) {
-    console.log('delete this: ' + rss.title);
+  onDelete(feed: Feed) {
+    console.log('delete this: ' + feed.title);
+    this.rssService.deleteFeed(feed)
+        .then(feed => {
+          if(feed !== null){
+            let i = this.feeds.indexOf(feed);
+            this.feeds.splice(i,1);
+            alert('delete feed thanh cong');
+          }
+        });
   }
 
   onRefesh(feed: Feed) {
     console.log('refesh this: ' + feed.title);
     this.rssService.refeshFeed(feed).then(feed => {
       if (feed !== null) {
-        this.getListOfRss();
+        let i = this.feeds.findIndex(f => f.link == feed.link);
+        this.feeds[i] = feed;
+        alert('update feed thanh cong');
         // this.selectedFeed = feed;
       }
     });

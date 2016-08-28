@@ -10,7 +10,7 @@ export class Feed {
         this.link = obj.link;
         this.articles = [];
         for (let i in obj.articles) {
-            this.articles.push(new Article(obj.articles[i]));
+            this.articles.push(new Article(obj.articles[i],this.title));
         }
     }
 }

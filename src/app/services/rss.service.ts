@@ -1,10 +1,10 @@
-import {Injectable} from '@angular/core';
-import {Headers, Http, Response} from '@angular/http';
+import {Injectable,Inject} from '@angular/core';
+import {Response} from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
 
-import {Feed} from '../model/Feed';
-import {Utility} from '../model/Utility';
+import {Feed,Utility} from '../index';
+import {HttpMethod} from '../shared/HttpMethod';
 
 
 const manyRss = [];
@@ -15,19 +15,19 @@ export class RssService {
     private sessionUser = 'myuser';
 
     constructor(
-        private http: Http
+       private http: HttpMethod
     ) { }
 
     // get array of rss
     getManyRss(): Promise<Feed[]> {
-        return this.get(this.rssUrl + '/' + this.sessionUser)
+        return this.http.get(this.rssUrl + '/' + this.sessionUser)
             .then(res => {
                 let obj = JSON.parse(res.text(), Utility.parseJsonToFeed);
                 let feeds: Feed[] = [];
                 for (let i in obj) {
                     feeds.push(new Feed(obj[i]));
                 }
-                return feeds as Feed[];
+                return feeds;
             })
             .catch(err => {
                 console.error('getManyRss: error ' + err);
@@ -39,10 +39,10 @@ export class RssService {
     // add new link
     addLink(link: string): Promise<Feed> {
         let json = {
-            "link": link,
-            "user": this.sessionUser
+            'link': link,
+            'user': this.sessionUser
         };
-        return this.post(JSON.stringify(json), this.rssUrl).then(res => {
+        return this.http.post(JSON.stringify(json), this.rssUrl).then(res => {
             let obj = JSON.parse(res.text(), Utility.parseJsonToFeed);
             let feed = new Feed(obj);
             return feed;
@@ -55,80 +55,31 @@ export class RssService {
     // refesh the feed
     refeshFeed(feed: Feed): Promise<Feed> {
         let json = {
-            "user": this.sessionUser,
-            "feed": feed
+            'user': this.sessionUser,
+            'feed': feed
         };
 
-        return this.put(JSON.stringify(json), this.rssUrl)
-            .then(() => feed)
+        return this.http.put(JSON.stringify(json), this.rssUrl)
+            .then((res) => {
+                let obj = JSON.parse(res.text(),Utility.parseJsonToFeed);
+                let feed = new Feed(obj);
+                return feed;
+            })
             .catch(error => {
                 console.error('refeshFeed: ' + error);
                 return null;
             });
     }
 
-    // call get to server
-    private get(url: string): Promise<Response> {
-        return this.http.get(url)
-            .toPromise()
-            .then(res => {
-                console.log('get status code: ' + res.status);
-                // console.log('body response: ' + res.text());
-                return res;
-            })
-            .catch(this.handleError);
-    }
+    deleteFeed(feed: Feed): Promise<Feed> {
+            let url = this.rssUrl + '?link=' + feed.link + '&user=' + this.sessionUser;
 
-    // call post to server
-    private post(json: string, url: string): Promise<Response> {
-        console.log('post chay voi gia tri: ' + JSON.stringify(json));
-        let headers = new Headers({
-            'Content-Type': 'application/json'
-        });
-
-        return this.http.post(url, json, headers)
-            .toPromise()
-            .then(res => {
-                console.log('post status code: ' + res.status);
-                // console.log('body response: ' + res.text());
-                return res;
-            })
-            .catch(this.handleError);
-    }
-
-    // call put to server
-    private put(json: string, url: string): Promise<Response> {
-        console.log('chay put voi gia tri: ' + json);
-        let headers = new Headers({
-            'Content-Type': 'application/json'
-        });
-
-        return this.http.put(url, json, headers)
-            .toPromise()
-            .then(res => {
-                console.log('put status code: ' + res.status);
-                // console.log('body response: ' + res.text());
-                return res;
-            })
-            .catch(this.handleError);
-
-    }
-
-    // handle error
-    private handleError(error: any): Promise<void> {
-        console.error('An error occurred', error.json());
-        switch (error.status) {
-            case 406:
-                alert(error.json() || error);
-                break;
-            case 404:
-                alert(error.json() || error);
-                break;
-            default:
-                alert('có lỗi lạ: ' + (error.json() || error));
-                break;
-        }
-        return Promise.reject(error);
+            return this.http.delete(url)
+                .then(res => feed)
+                .catch(error => {
+                    console.error('deleteFeed co error: ' + error);
+                    return null;
+                });
     }
 }
 
